@@ -2,7 +2,8 @@
 
 #define LED 8
 #define MIC A0
-#define REF 950 //refrence
+#define REF 735 //refrence
+#define REF2 725
 
 
 short int micVal ;
@@ -20,7 +21,9 @@ void setup() {
 
 void loop() {
     micVal = pow(analogRead(MIC), 2);
-    if (micVal >= REF) {
+    Serial.print("mic:");
+    Serial.println(micVal);
+    if (micVal >= REF or micVal <= REF2) {
         micValQ.push_back(1);
     }
     else {
@@ -34,17 +37,17 @@ void loop() {
         sum += micValQ[i];
     }
 
-    if (sum > 11) {
+    if (sum > 14 and sum < 60) {
         digitalWrite(LED, HIGH);
     }
     else {
         digitalWrite(LED, LOW);
     }
 
-    Serial.print("sum: ");
-    Serial.println(sum);
+    //Serial.print("sum: ");
+    //Serial.println(sum);
 
-    delay(2);
+    delay(1);
 
     
 }
