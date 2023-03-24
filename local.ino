@@ -13,9 +13,6 @@ Deque <unsigned char> function_inutile(Deque <unsigned char> micValQueue) {
     short int micVal;
     micVal = pow(analogRead(MIC), 2);
     micValQueue.push_back(micVal >= REF or micVal <= REF2);
-    if (micValQueue.count() > 100) {
-        micValQueue.pop_front();
-    }
     unsigned char sum = 0;
     for (int i = 0; i < micValQueue.count(); i++) {
         sum += micValQueue[i];
@@ -29,7 +26,7 @@ void setup() {
     Serial.begin(9600);
     pinMode(LED, OUTPUT);
     pinMode(MIC, INPUT);
-    Deque <unsigned char> micValQueue;
+    Deque <unsigned char> micValQueue(100);
     for (int i = 0; i < 199; i++ ){
         time1 = micros();
         micValQueue = function_inutile(micValQueue);    
