@@ -1,0 +1,4 @@
+Virer le for ligne 34/36 :
+  initialiser une queue sur cents valeurs dans le setup
+  ajouter les trucs a la somme en même temps qu'à la queue
+  a chaque execution on vire une valeur et on en ajoute une
