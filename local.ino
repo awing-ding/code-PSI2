@@ -9,10 +9,6 @@
 #define REF4 60 // more than that should be a microphone error
 #define MAX_QUEUE_SIZE 75 //the size of the queue
 
-
-
-
-
 //A function that reads the value of the microphone and compares it to a reference value. If the value is greater than the reference value, it turns on the LED.
 Deque <unsigned char> function_inutile(Deque <unsigned char> micValQueue) {
     short int micVal;
@@ -41,6 +37,3 @@ void setup() {
 }
 
 void loop() {}
-
-
-
