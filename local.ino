@@ -13,7 +13,7 @@
 Deque <unsigned char> function_inutile(Deque <unsigned char> micValQueue) {
     int micVal;
     unsigned char count = micValQueue.pop_back();
-    micVal = pow(analogRead(MIC), 2);
+    micVal = pow(analogRead(MIC), 2); //trying to have more visible differences TODO: see if it's really useful
     unsigned char trigger = micVal > REF or micVal < REF2;
     micValQueue.push_back(trigger);
     count += trigger;
@@ -25,7 +25,7 @@ Deque <unsigned char> function_inutile(Deque <unsigned char> micValQueue) {
 void setup() {
     long unsigned time1;
     unsigned int time;
-    Serial.begin(9600);
+    Serial.begin(4800); //for debug, we should try to reduce the baud rate
     pinMode(LED, OUTPUT);
     pinMode(MIC, INPUT);
     Deque <unsigned char> micValQueue(MAX_QUEUE_SIZE);
