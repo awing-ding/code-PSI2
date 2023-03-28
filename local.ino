@@ -14,16 +14,17 @@ Deque <unsigned char> function_inutile(Deque <unsigned char> micValQueue) {
     int micVal;
     unsigned char count = micValQueue.pop_back();
     micVal = pow(analogRead(MIC), 2);
-    unsigned char trigger = micVal > REF and micVal < REF2;
+    unsigned char trigger = micVal > REF or micVal < REF2;
     micValQueue.push_back(trigger);
     count += trigger;
     micValQueue.push_back(count);
     digitalWrite(LED, count > REF3 and count < REF4);
-    return count;
+    return micValQueue;
 }
 
 void setup() {
     long unsigned time1;
+    unsigned int time;
     Serial.begin(9600);
     pinMode(LED, OUTPUT);
     pinMode(MIC, INPUT);
@@ -31,7 +32,7 @@ void setup() {
     for (int i = 0; i < 199; i++ ){ //some test don't worry
         time1 = micros();
         micValQueue = function_inutile(micValQueue);    
-        int time = micros()-time1;
+        time = micros()-time1;
         Serial.println(time);
     }    
 }
