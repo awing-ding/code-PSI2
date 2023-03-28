@@ -10,16 +10,15 @@
 #define MAX_QUEUE_SIZE 100 //the size of the queue
 
 //A function that reads the value of the microphone and compares it to a reference value. If the value is greater than the reference value, it turns on the LED.
-Deque <unsigned char> function_inutile(Deque <unsigned char> micValQueue) {
+void function_inutile(Deque <unsigned char> * const micValQueue) {
     int micVal;
-    unsigned char count = micValQueue.pop_back();
+    unsigned char count = micValQueue->pop_back();
     micVal = pow(analogRead(MIC), 2);
     unsigned char trigger = micVal > REF or micVal < REF2;
-    micValQueue.push_back(trigger);
+    micValQueue->push_back(trigger);
     count += trigger;
-    micValQueue.push_back(count);
+    micValQueue->push_back(count);
     digitalWrite(LED, count > REF3 and count < REF4);
-    return micValQueue;
 }
 
 void setup() {
@@ -29,9 +28,13 @@ void setup() {
     pinMode(LED, OUTPUT);
     pinMode(MIC, INPUT);
     Deque <unsigned char> micValQueue(MAX_QUEUE_SIZE);
+    for (int i = 0; i < MAX_QUEUE_SIZE; i++){
+        micValQueue.push_back(0);
+    }
+    Deque <unsigned char> * micValQueuePtr = &micValQueue;
     for (int i = 0; i < 199; i++ ){ //some test don't worry
         time1 = micros();
-        micValQueue = function_inutile(micValQueue);    
+        function_inutile(micValQueuePtr);    
         time = micros()-time1;
         Serial.println(time);
     }    
