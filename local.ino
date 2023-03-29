@@ -38,10 +38,10 @@ void setup() {
         time = micros()-time1;
         Serial.println(time);
     }*/
-    main(micValQueuePtr);
+    pseudo_main(micValQueuePtr);
 }
 
-void main(Deque <unsigned char> * const micValQueuePtr){
+void pseudo_main(Deque <unsigned char> * const micValQueuePtr){
     while (1){
         //function_inutile(micValQueuePtr);
         Serial.println(analogRead(MIC));
