@@ -25,7 +25,7 @@ void function_inutile(Deque <unsigned char> * const micValQueue) {
 void setup() {
     long unsigned time1;
     unsigned int time;
-    Serial.begin(9600);
+    Serial.begin(9600); //for debug, we should try to reduce the baud rate
     pinMode(LED, OUTPUT);
     pinMode(MIC, INPUT);
     Deque <unsigned char> micValQueue(MAX_QUEUE_SIZE);
