@@ -2,6 +2,7 @@
 
 #define LED 8
 #define MIC A0
+//sensibility has changed so ref should be changed too
 #define REF 735 //reference -> less than 735 is the value of the microphone when there is no sound. It is used as a refe
 #define REF2 725 //reference -> more than 725 is the value of the microphone when there is no sound. It is used as a refe
 
@@ -13,7 +14,7 @@
 void function_inutile(Deque <unsigned char> * const micValQueue) {
     int micVal;
     unsigned char count = micValQueue->pop_back();
-    micVal = pow(analogRead(MIC), 2);
+    int micVal = analogRead(MIC);
     unsigned char trigger = micVal > REF or micVal < REF2;
     micValQueue->push_back(trigger);
     count += trigger;
@@ -32,12 +33,19 @@ void setup() {
         micValQueue.push_back(0);
     }
     Deque <unsigned char> * micValQueuePtr = &micValQueue;
-    for (int i = 0; i < 199; i++ ){ //some test don't worry
+    /*for (int i = 0; i < 199; i++ ){ //some test don't worry
         time1 = micros();
         function_inutile(micValQueuePtr);    
         time = micros()-time1;
         Serial.println(time);
-    }    
+    }*/
+    main(micValQueuePtr);
 }
 
+void main(Deque <unsigned char> * const micValQueuePtr){
+    while (1){
+        //function_inutile(micValQueuePtr);
+        Serial.println(analogRead(MIC));
+    }
+}
 void loop() {}
