@@ -12,10 +12,9 @@
 
 //A function that reads the value of the microphone and compares it to a reference value. If the value is greater than the reference value, it turns on the LED.
 void function_inutile(Deque <unsigned char> * const micValQueue) {
-    int micVal;
     unsigned char count = micValQueue->pop_back();
-    int micVal = analogRead(MIC);
-    unsigned char trigger = micVal > REF or micVal < REF2;
+    int micValue = analogRead(MIC);
+    unsigned char trigger = micValue > REF or micValue < REF2;
     micValQueue->push_back(trigger);
     count += trigger;
     micValQueue->push_back(count);
