@@ -5,12 +5,12 @@
 #define MIC A0 
 
 //references to detect a trigger
-#define REF 82 
-#define REF2 96 
+#define REF 39
+#define REF2 41
 
 //the number of time the microphone value is greater or inferior than the reference value to activate the system
 #define REF3 20 // the number of time the microphone value is greater than the reference value to activate the system
-#define REF4 60 // more than that should be a microphone error
+#define REF4 60 // more than that should be a microphone error or dumb ppl that hit the mic
 
 //the size of the queue
 #define MAX_QUEUE_SIZE 100 
