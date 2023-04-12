@@ -1,50 +1,70 @@
-#include "lib/deque.h"
+#include "lib/deque.h" //lib with the deque class
 
+//the pins
 #define LED 8
-#define MIC A0
+#define MIC A0 
 
-#define REF 685 //reference -> less than it is the value of the microphone when there is no sound. It is used as a refe
-#define REF2 675 //reference -> more than it is the value of the microphone when there is no sound. It is used as a refe
+//references to detect a trigger
+#define REF 82 
+#define REF2 96 
 
-#define REF3 10 // the number of time the microphone value is greater than the reference value to activate the system
+//the number of time the microphone value is greater or inferior than the reference value to activate the system
+#define REF3 20 // the number of time the microphone value is greater than the reference value to activate the system
 #define REF4 60 // more than that should be a microphone error
-#define MAX_QUEUE_SIZE 100 //the size of the queue
 
-//A function that reads the value of the microphone and compares it to a reference value. If the value is greater than the reference value, it turns on the LED.
-void function_inutile(Deque <unsigned char> * const micValQueue) {
-    unsigned char count = micValQueue->pop_back();
-    int micValue = analogRead(MIC);
-    unsigned char trigger = micValue > REF or micValue < REF2;
-    micValQueue->push_back(trigger);
-    count += trigger;
-    micValQueue->push_back(count);
-    digitalWrite(LED, count > REF3 and count < REF4);
-}
+//the size of the queue
+#define MAX_QUEUE_SIZE 100 
+
+//the functions prototypes
+void is_there_alarm(Deque <unsigned char> * const queue_of_time_it_was_triggered);
+void fill_queue(Deque <unsigned char> * const queue_of_time_it_was_triggered);
+
 
 void setup() {
-    //long unsigned time1;
-    //unsigned int time;
-    //Serial.begin(9600); //for debug, we should try to reduce the baud rate
+    //sets the pins
     pinMode(LED, OUTPUT);
     pinMode(MIC, INPUT);
-    Deque <unsigned char> micValQueue(MAX_QUEUE_SIZE);
-    for (int i = 0; i < MAX_QUEUE_SIZE; i++){
-        micValQueue.push_back(0);
-    }
-    Deque <unsigned char> * micValQueuePtr = &micValQueue;
-    /*for (int i = 0; i < 199; i++ ){ //some test don't worry
-        time1 = micros();
-        function_inutile(micValQueuePtr);    
-        time = micros()-time1;
-        Serial.println(time);
-    }*/
-    pseudo_main(micValQueuePtr);
+
+    //creates the queue, fill it and get a pointer to it
+    Deque <unsigned char> queue_of_time_it_was_triggered(MAX_QUEUE_SIZE);
+    fill_queue(&queue_of_time_it_was_triggered);
+    Deque <unsigned char> * pointer_of_triggers_queue = &queue_of_time_it_was_triggered;
+
+    //starts the main function, not the arduino loop but a home-made one
+    pseudo_main(pointer_of_triggers_queue);
 }
 
-void pseudo_main(Deque <unsigned char> * const micValQueuePtr){
+//the main function
+void pseudo_main(Deque <unsigned char> * const pointer_of_triggers_queue){
+    //a forever loop that checks if there is an alarm
     while (1){
-        function_inutile(micValQueuePtr);
-        //Serial.println(analogRead(MIC));
+        is_there_alarm(pointer_of_triggers_queue);
     }
 }
+
+//A function that reads the value of the microphone and compares it to a reference value. If the value is greater than the reference value, it turns on the LED.
+void is_there_alarm(Deque <unsigned char> * const queue_of_time_it_was_triggered) {
+    unsigned char number_of_time_triggered = queue_of_time_it_was_triggered->pop_back();
+
+    //reads the value of the microphone and compares it to a reference value
+    int value_of_mic = analogRead(MIC);
+    unsigned char trigger = value_of_mic > REF or value_of_mic < REF2; //1 if there is a trigger, 0 if not
+    queue_of_time_it_was_triggered->push_back(trigger);
+    //use a counter value to be faster
+    number_of_time_triggered += trigger;
+    queue_of_time_it_was_triggered->push_back(number_of_time_triggered);
+
+    //if the number of time the microphone value is greater than the reference value is greater than REF3, it turns on the LED
+    //as more than REF4 is considered as a microphone error, it turns off the LED
+    digitalWrite(LED, number_of_time_triggered > REF3 and number_of_time_triggered < REF4);
+}
+
+void fill_queue(Deque <unsigned char> * const queue_of_time_it_was_triggered){
+    for (int i = 0; i < MAX_QUEUE_SIZE; i++){
+        queue_of_time_it_was_triggered->push_back(0);
+    }
+}
+
+//as we didn't really know how it works, we made our own loop
+//but as it's mandatory to have it, we made it empty
 void loop() {}
