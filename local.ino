@@ -1,4 +1,8 @@
-#include "lib/deque.h" //lib with the deque class
+//lib with the deque class
+#include "lib/deque.h" 
+
+//import function prototype
+#include "local.h"
 
 //the pins
 #define LED 8
@@ -14,10 +18,6 @@
 
 //the size of the queue
 #define MAX_QUEUE_SIZE 100 
-
-//the functions prototypes
-void is_there_alarm(Deque <unsigned char> * const queue_of_time_it_was_triggered);
-void fill_queue(Deque <unsigned char> * const queue_of_time_it_was_triggered);
 
 
 void setup() {
