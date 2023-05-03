@@ -45,6 +45,7 @@ void pseudo_main(Deque <unsigned char> * const pointer_of_triggers_queue){
 //A function that reads the value of the microphone and compares it to a reference value. If the value is greater than the reference value, it turns on the LED.
 void is_there_alarm(Deque <unsigned char> * const queue_of_time_it_was_triggered) {
     unsigned char number_of_time_triggered = queue_of_time_it_was_triggered->pop_back();
+    number_of_time_triggered -= queue_of_time_it_was_triggered->pop_front();
 
     //reads the value of the microphone and compares it to a reference value
     int value_of_mic = analogRead(MIC);
