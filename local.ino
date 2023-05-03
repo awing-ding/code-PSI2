@@ -48,7 +48,7 @@ void is_there_alarm(Deque <unsigned char> * const queue_of_time_it_was_triggered
 
     //reads the value of the microphone and compares it to a reference value
     int value_of_mic = analogRead(MIC);
-    unsigned char trigger = value_of_mic > REF or value_of_mic < REF2; //1 if there is a trigger, 0 if not
+    unsigned char trigger = (value_of_mic > REF or value_of_mic < REF2); //1 if there is a trigger, 0 if not
     queue_of_time_it_was_triggered->push_back(trigger);
     //use a counter value to be faster
     number_of_time_triggered += trigger;
